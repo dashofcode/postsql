@@ -99,7 +99,7 @@ $$ LANGUAGE plv8 IMMUTABLE STRICT;
 
 
 CREATE or REPLACE FUNCTION
-json_date(data json, key text) RETURNS TIMESTAMP AS $$
+json_timestamp(data json, key text) RETURNS TIMESTAMP AS $$
 
   var ret = data;
   var keys = key.split('.')

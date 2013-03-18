@@ -79,10 +79,11 @@ Literal JS *true* and *false* are boolean, all other values are NULL.
     SELECT id, json_bool(data,'boolean') FROM things WHERE json_bool(data,'boolean') = false
 
 
-#### json_date(column, field) returns TIMESTAMP
+#### json_timestamp(column, field) returns TIMESTAMP
 
-Any JS numeric value will be converted to a JS date, all other values are NULL.
+Any JS numeric value will be converted to a TIMESTAMP via a JS Date object, all other values are NULL.
 
+    SELECT id, json_timestamp(data,'date') FROM things WHERE json_timestamp(data,'date') <= NOW();
     SELECT id, json_date(data,'date') FROM things WHERE json_date(data,'date') <= NOW();
 
 
