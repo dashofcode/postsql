@@ -117,19 +117,33 @@ json_date(data json, key text) RETURNS TIMESTAMP AS $$
 $$ LANGUAGE plv8 IMMUTABLE STRICT;
 
 
-CREATE or REPLACE FUNCTION
-json_update(data json, value text) RETURNS BOOLEAN AS $$
+CREATE OR REPLACE FUNCTION
+json_update(data json, new_data json) RETURNS json AS $$
 
-  var data = data;
-  var forUpdate = value;
+  var data = data,
+      newData = new_data;
 
-  for (k in forUpdate) {
-    if ( data.hasOwnProperty(k) ) {
-      data[k] = forUpdate[k];
+  for (path in newData) {
+    var property = data,
+        keys = path.split('.'),
+        lastIndex = keys.length - 1,
+        lastKey = keys[lastIndex];
+
+    for (var i = 0; i < lastIndex; ++i) {
+      var key = keys[i],
+          propertyValue = property[key];
+
+      if (typeof propertyValue === 'undefined') {
+        propertyValue= {};
+        property[key] = propertyValue;
+      }
+      property = propertyValue;
     }
+
+    property[lastKey] = newData[path];
   }
 
-  return true;
+  return data;
 
 $$ LANGUAGE plv8 STABLE STRICT;
 
