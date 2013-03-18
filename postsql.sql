@@ -117,6 +117,27 @@ json_timestamp(data json, key text) RETURNS TIMESTAMP AS $$
 $$ LANGUAGE plv8 IMMUTABLE STRICT;
 
 
+CREATE or REPLACE FUNCTION
+json_date(data json, key text) RETURNS DATE AS $$
+
+  var ret = data,
+      keys = key.split('.'),
+      length = keys.length;
+
+  for (var i = 0; i < length; ++i) {
+    if (ret != undefined) ret = ret[keys[i]];
+  }
+
+  ret = new Date(ret)
+  if (isNaN(ret.getDay())) {
+    return null;
+  } else {
+    return ret.toISOString();
+  }
+
+$$ LANGUAGE plv8 IMMUTABLE STRICT;
+
+
 CREATE OR REPLACE FUNCTION
 json_update(data json, new_data json) RETURNS json AS $$
 
