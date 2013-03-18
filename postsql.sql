@@ -160,7 +160,7 @@ json_push(data json, key text, value json) RETURNS JSON AS $$
     last_field[keys.pop()]= value;
   }
 
- return JSON.stringify(data);
+ return data;
 
 $$ LANGUAGE plv8 STABLE STRICT;
 
@@ -192,7 +192,7 @@ json_add_to_set(data json, key text, value json) RETURNS JSON AS $$
     last_field[keys.pop()]= value;
   }
 
-  return JSON.stringify(data);
+  return data;
 
 $$ LANGUAGE plv8 STABLE STRICT;
 
@@ -220,7 +220,7 @@ json_pull(data json, key text, value json) RETURNS JSON AS $$
     }
   }
 
-  return JSON.stringify(data);
+  return data;
 
 $$ LANGUAGE plv8 STABLE STRICT;
 
@@ -236,6 +236,6 @@ json_data(data json, fields text) RETURNS JSON AS $$
       if (_fields.indexOf(key) == -1) delete data[key];
     }
 
-  return JSON.stringify(data);
+  return data;
 
 $$ LANGUAGE plv8 STABLE STRICT;
